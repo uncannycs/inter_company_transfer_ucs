@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_inter_company_transfer" model="ir.actions.report">
+        <field name="name">Inter Company Transfer Slip</field>
+        <field name="model">inter.company.transfer</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">inter_company_transfer_ucs.report_inter_company_transfer</field>
+        <field name="report_file">inter_company_transfer_ucs.report_inter_company_transfer</field>
+        <field name="print_report_name">'Inter_Company_Transfer_' + object.name</field>
+        <field name="binding_model_id" ref="model_inter_company_transfer"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_return_inter_company_transfer" model="ir.actions.report">
+        <field name="name">Return Inter Company Transfer Slip</field>
+        <field name="model">return.inter.company.transfer</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">inter_company_transfer_ucs.report_inter_company_transfer</field>
+        <field name="report_file">inter_company_transfer_ucs.report_inter_company_transfer</field>
+        <field name="print_report_name">'Return_Inter_Company_Transfer_' + object.name</field>
+        <field name="binding_model_id" ref="model_return_inter_company_transfer"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

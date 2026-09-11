@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_inter_company_transfer_form" model="ir.ui.view">
+        <field name="name">inter.company.transfer.form</field>
+        <field name="model">inter.company.transfer</field>
+        <field name="arch" type="xml">
+            <form string="Inter Company Transfer">
+                <header>
+                    <button name="action_process" string="Process" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_reverse" string="Reverse" type="object" class="btn-secondary" invisible="state != 'process'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state != 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,process,cancel"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_sale_orders" type="object" class="oe_stat_button" icon="fa-usd" invisible="sale_order_count == 0">
+                            <field name="sale_order_count" widget="statinfo" string="Sale Orders"/>
+                        </button>
+                        <button name="action_view_purchase_orders" type="object" class="oe_stat_button" icon="fa-shopping-cart" invisible="purchase_order_count == 0">
+                            <field name="purchase_order_count" widget="statinfo" string="Purchase Orders"/>
+                        </button>
+                        <button name="action_view_pickings" type="object" class="oe_stat_button" icon="fa-truck" invisible="picking_count == 0">
+                            <field name="picking_count" widget="statinfo" string="Pickings"/>
+                        </button>
+                        <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-pencil-square-o" invisible="invoice_count == 0">
+                            <field name="invoice_count" widget="statinfo" string="Invoices/Bills"/>
+                        </button>
+                        <button name="action_view_return_transfers" type="object" class="oe_stat_button" icon="fa-undo" invisible="return_transfer_count == 0">
+                            <field name="return_transfer_count" widget="statinfo" string="Returns"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Source (From)">
+                            <field name="from_company_id" readonly="state != 'draft'"/>
+                            <field name="from_warehouse_id" readonly="state != 'draft'"/>
+                        </group>
+                        <group string="Destination (To)">
+                            <field name="to_company_id" readonly="state != 'draft'"/>
+                            <field name="to_warehouse_id" readonly="state != 'draft'"/>
+                            <field name="date" readonly="state != 'draft'"/>
+                            <field name="currency_id" groups="base.group_multi_currency" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Products" name="products">
+                            <field name="line_ids" readonly="state != 'draft'">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="uom_id"/>
+                                    <field name="price_unit"/>
+                                    <field name="subtotal"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_inter_company_transfer_list" model="ir.ui.view">
+        <field name="name">inter.company.transfer.list</field>
+        <field name="model">inter.company.transfer</field>
+        <field name="arch" type="xml">
+            <list string="Inter Company Transfers">
+                <field name="name"/>
+                <field name="from_company_id"/>
+                <field name="from_warehouse_id"/>
+                <field name="to_company_id"/>
+                <field name="to_warehouse_id"/>
+                <field name="date"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'process'" decoration-danger="state == 'cancel'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_inter_company_transfer_search" model="ir.ui.view">
+        <field name="name">inter.company.transfer.search</field>
+        <field name="model">inter.company.transfer</field>
+        <field name="arch" type="xml">
+            <search string="Search Inter Company Transfers">
+                <field name="name"/>
+                <field name="from_company_id"/>
+                <field name="to_company_id"/>
+                <field name="from_warehouse_id"/>
+                <field name="to_warehouse_id"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Processed" name="process" domain="[('state', '=', 'process')]"/>
+                <group>
+                    <filter string="From Company" name="group_from_company" context="{'group_by': 'from_company_id'}"/>
+                    <filter string="To Company" name="group_to_company" context="{'group_by': 'to_company_id'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_inter_company_transfer" model="ir.actions.act_window">
+        <field name="name">InterCompany Transaction</field>
+        <field name="res_model">inter.company.transfer</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_inter_company_transfer_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Inter Company Transfer
+            </p>
+            <p>
+                Transfer stock and automate sales/purchase transactions between companies.
+            </p>
+        </field>
+    </record>
+</odoo>

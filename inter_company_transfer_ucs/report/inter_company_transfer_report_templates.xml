@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_inter_company_transfer_document">
+        <t t-call="web.external_layout">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.from_company_id.partner_id.lang)" />
+            <div class="page">
+                <div class="oe_structure"/>
+                <h2 class="mt-4">
+                    <span t-if="doc._name == 'inter.company.transfer'">Inter Company Transfer: </span>
+                    <span t-if="doc._name == 'return.inter.company.transfer'">Return Inter Company Transfer: </span>
+                    <span t-field="doc.name"/>
+                </h2>
+                <div class="row mt-4 mb-4">
+                    <div class="col-6">
+                        <strong>Source (From):</strong>
+                        <div><span t-field="doc.from_company_id.name"/></div>
+                        <div>Warehouse: <span t-field="doc.from_warehouse_id.name"/></div>
+                    </div>
+                    <div class="col-6">
+                        <strong>Destination (To):</strong>
+                        <div><span t-field="doc.to_company_id.name"/></div>
+                        <div>Warehouse: <span t-field="doc.to_warehouse_id.name"/></div>
+                        <div>Date: <span t-field="doc.date"/></div>
+                        <div>Status: <span t-field="doc.state"/></div>
+                    </div>
+                </div>
+
+                <table class="table table-sm o_main_table mt-4">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th class="text-end">Quantity</th>
+                            <th>Unit of Measure</th>
+                            <th class="text-end">Unit Price</th>
+                            <th class="text-end">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="doc.line_ids" t-as="line">
+                            <td><span t-field="line.product_id.display_name"/></td>
+                            <td class="text-end"><span t-field="line.quantity"/></td>
+                            <td><span t-field="line.uom_id.name"/></td>
+                            <td class="text-end"><span t-field="line.price_unit" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                            <td class="text-end"><span t-field="line.subtotal" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_inter_company_transfer">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="inter_company_transfer_ucs.report_inter_company_transfer_document" t-lang="doc.from_company_id.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

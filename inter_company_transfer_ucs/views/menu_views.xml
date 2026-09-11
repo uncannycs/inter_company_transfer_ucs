@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Top Menu under Inventory -->
+    <menuitem id="menu_inter_company_root"
+              name="InterCompany Transaction"
+              parent="stock.menu_stock_root"
+              sequence="4"
+              groups="inter_company_transfer_ucs.group_inter_company_user"/>
+
+    <!-- Submenus -->
+    <menuitem id="menu_inter_company_transfer"
+              name="InterCompany Transaction"
+              parent="menu_inter_company_root"
+              action="action_inter_company_transfer"
+              sequence="1"/>
+
+    <menuitem id="menu_return_inter_company_transfer"
+              name="Return InterCompany Transaction"
+              parent="menu_inter_company_root"
+              action="action_return_inter_company_transfer"
+              sequence="2"/>
+</odoo>
