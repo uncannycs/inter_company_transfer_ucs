@@ -48,6 +48,6 @@ Key Features:
     'maintainer': 'Uncanny Consulting Services LLP',
     'license': 'Other proprietary',
     "images": ['static/description/banner.gif'],
-    "price": 60,
+    "price": 100,
     "currency": "USD",
 }
